@@ -18,11 +18,13 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
+            'nicename' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
         $user = new User([
             'name' => $request->name,
+            'nicename' => $request->nicename,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
@@ -54,7 +56,7 @@ class AuthController extends Controller
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
-        
+
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
