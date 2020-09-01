@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Draft;
+use App\Http\Resources\Draft as DraftResource;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -14,7 +17,7 @@ class DraftController extends Controller
      */
     public function index()
     {
-        //
+        return DraftResource::collection(Draft::all());
     }
 
     /**
