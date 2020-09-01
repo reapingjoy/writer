@@ -26,4 +26,9 @@ Route::group([
 ], function() {
     Route::get('logout', 'API\AuthController@logout');
     Route::get('user', 'API\AuthController@user');
+
+    Route::apiResources([
+        'drafts' => 'API\DraftController',
+        'notes' => 'API\NoteController',
+    ]);
 });
