@@ -20,6 +20,7 @@ class NoteController extends Controller
      */
     public function index($draft_id)
     {
+        
         $draft = Draft::findOrFail($draft_id);
         $notes = $draft->notes;
 
@@ -70,6 +71,8 @@ class NoteController extends Controller
             ], 401);
         }
 
+        $this->authorize('view', $note);
+
         return new NoteResource($note);
     }
 
@@ -89,6 +92,8 @@ class NoteController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
         }
+
+        $this->authorize('update', $note);
 
         $validator = Validator::make($request->all(), [
             'title' => 'required',
@@ -122,6 +127,8 @@ class NoteController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
         }
+
+        $this->authorize('delete', $note);
 
         $note->delete();
 
