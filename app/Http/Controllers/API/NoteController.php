@@ -127,4 +127,15 @@ class NoteController extends Controller
 
         return new NoteResource($note);
     }
+
+    /**
+     * Get All Soft Deleted Notes
+     *
+     */
+    public function getAllDeleted($draft_id)
+    {
+        $notes = Note::where('draft_id', '=', $draft_id)->onlyTrashed()->get();
+
+        return NoteResource::collection($notes);
+    }
 }

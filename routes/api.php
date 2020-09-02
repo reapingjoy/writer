@@ -28,7 +28,7 @@ Route::group([
     Route::get('user', 'API\AuthController@user');
 
     Route::get('drafts/deleted', 'API\DraftController@getAllDeleted');
-    // Route::get('notes/deleted', 'API\NotesController@getAllDeleted');
+    Route::get('drafts/{draft_id}/notes/deleted', 'API\NoteController@getAllDeleted');
 
     Route::apiResources([
         'drafts' => 'API\DraftController',
