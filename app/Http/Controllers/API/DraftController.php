@@ -20,6 +20,8 @@ class DraftController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Draft::class);
+
         $user_id = Auth::id();
         $drafts = User::findOrFail($user_id)->drafts()->get();
         return DraftResource::collection($drafts);
@@ -63,7 +65,10 @@ class DraftController extends Controller
      */
     public function show($id)
     {
+        
         $draft = Draft::findOrFail($id);
+
+        $this->authorize('view', $draft);
 
         return new DraftResource($draft);
     }
@@ -78,6 +83,8 @@ class DraftController extends Controller
     public function update(Request $request, $id)
     {
         $draft = Draft::findOrFail($id);
+
+        $this->authorize('update', $draft);
 
         $validator = Validator::make($request->all(), [
             'title' => 'required',
@@ -105,6 +112,8 @@ class DraftController extends Controller
     public function destroy($id)
     {
         $draft = Draft::findOrFail($id);
+
+        $this->authorize('delete', $draft);
 
         $draft->delete();
 
