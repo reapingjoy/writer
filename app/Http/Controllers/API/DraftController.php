@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DraftController extends Controller
 {
@@ -32,12 +33,26 @@ class DraftController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedDraft = $request->validated();
-        $validatedDraft['user_id'] = $request->user()->id;
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'alias' => 'required|unique:drafts',
+            'short_description' => 'required',
+        ]);
 
-        $draft = Draft::create($validatedDraft);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $draft = new Draft([
+            'title' => $request->title,
+            'alias' => $request->alias,
+            'short_description' => $request->short_description,
+            'user_id' => $request->user()->id,
+        ]);
+        $draft->save();
 
         return new DraftResource($draft);
+
     }
 
     /**
@@ -48,7 +63,9 @@ class DraftController extends Controller
      */
     public function show($id)
     {
-        //
+        $draft = Draft::findOrFail($id);
+
+        return new DraftResource($draft);
     }
 
     /**
@@ -60,7 +77,23 @@ class DraftController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $draft = Draft::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'short_description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $draft->title = $request->input('title');
+        $draft->short_description = $request->input('short_description');
+
+        $draft->save();
+
+        return new DraftResource($draft);
     }
 
     /**
@@ -71,6 +104,10 @@ class DraftController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $draft = Draft::findOrFail($id);
+
+        $draft->delete();
+
+        return new DraftResource($draft);
     }
 }
