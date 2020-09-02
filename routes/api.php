@@ -29,10 +29,10 @@ Route::group([
 
     Route::get('drafts/deleted', 'API\DraftController@getAllDeleted');
     // Route::get('notes/deleted', 'API\NotesController@getAllDeleted');
-    
+
     Route::apiResources([
         'drafts' => 'API\DraftController',
-        'notes' => 'API\NoteController',
+        'drafts.notes' => 'API\NoteController',
     ]);
     
     

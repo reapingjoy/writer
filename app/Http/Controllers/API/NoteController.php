@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Draft;
+use App\User;
+use App\Note;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Note as NoteResource;
+use Illuminate\Support\Facades\Validator;
 
 class NoteController extends Controller
 {
@@ -12,9 +18,12 @@ class NoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($draft_id)
     {
-        //
+        $draft = Draft::findOrFail($draft_id);
+        $notes = $draft->notes;
+
+        return NoteResource::collection($notes);
     }
 
     /**
@@ -23,9 +32,25 @@ class NoteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $draft_id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'body' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $note = new Note([
+            'title' => $request->title,
+            'body' => $request->body,
+            'draft_id' => $draft_id,
+        ]);
+        $note->save();
+
+        return new NoteResource($note);
     }
 
     /**
@@ -34,9 +59,18 @@ class NoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($draft_id, $note_id)
     {
-        //
+        
+        $note = Note::where('id', '=', $note_id)->where('draft_id', '=', $draft_id)->get()->first();
+
+        if (is_null($note)) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        return new NoteResource($note);
     }
 
     /**
@@ -46,9 +80,31 @@ class NoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $draft_id, $note_id)
     {
-        //
+        $note = Note::where('id', '=', $note_id)->where('draft_id', '=', $draft_id)->get()->first();
+
+        if (is_null($note)) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'body' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $note->title = $request->input('title');
+        $note->body = $request->input('body');
+
+        $note->save();
+
+        return new NoteResource($note);
     }
 
     /**
@@ -57,8 +113,18 @@ class NoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($draft_id, $note_id)
     {
-        //
+        $note = Note::where('id', '=', $note_id)->where('draft_id', '=', $draft_id)->get()->first();
+
+        if (is_null($note)) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        $note->delete();
+
+        return new NoteResource($note);
     }
 }
