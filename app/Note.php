@@ -9,7 +9,7 @@ class Note extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title', 'body'];
+    protected $fillable = ['title', 'body', 'draft_id'];
 
     public function draft()
     {

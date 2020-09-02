@@ -10,7 +10,7 @@ class Draft extends Model
 
     use SoftDeletes;
 
-    protected $fillable = ['title', 'alias', 'short_description'];
+    protected $fillable = ['title', 'alias', 'short_description', 'user_id'];
 
     public function user()
     {

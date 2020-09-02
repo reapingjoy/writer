@@ -32,7 +32,12 @@ class DraftController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedDraft = $request->validated();
+        $validatedDraft['user_id'] = $request->user()->id;
+
+        $draft = Draft::create($validatedDraft);
+
+        return new DraftResource($draft);
     }
 
     /**
