@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Draft;
+use App\User;
 use App\Http\Resources\Draft as DraftResource;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,7 +19,9 @@ class DraftController extends Controller
      */
     public function index()
     {
-        return DraftResource::collection(Draft::all());
+        $user_id = Auth::id();
+        $drafts = User::findOrFail($user_id)->drafts()->get();
+        return DraftResource::collection($drafts);
     }
 
     /**
