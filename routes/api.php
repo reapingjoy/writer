@@ -27,8 +27,14 @@ Route::group([
     Route::get('logout', 'API\AuthController@logout');
     Route::get('user', 'API\AuthController@user');
 
+    Route::get('drafts/deleted', 'API\DraftController@getAllDeleted');
+    // Route::get('notes/deleted', 'API\NotesController@getAllDeleted');
+    
     Route::apiResources([
         'drafts' => 'API\DraftController',
         'notes' => 'API\NoteController',
     ]);
+    
+    
+
 });

@@ -110,4 +110,15 @@ class DraftController extends Controller
 
         return new DraftResource($draft);
     }
+
+    /**
+     * Get All Soft Deleted Drafts
+     *
+     */
+    public function getAllDeleted()
+    {
+        $drafts = Draft::onlyTrashed()->get();
+
+        return DraftResource::collection($drafts);
+    }
 }
