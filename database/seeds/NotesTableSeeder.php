@@ -14,6 +14,7 @@ class NotesTableSeeder extends Seeder
      */
     public function run()
     {
+        //Some user interactions and using the factory to seed
         $drafts = Draft::all();
 
         if($drafts->count() === 0) {

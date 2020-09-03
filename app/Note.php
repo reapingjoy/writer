@@ -11,6 +11,7 @@ class Note extends Model
 
     protected $fillable = ['title', 'body', 'draft_id'];
 
+    //set relationship
     public function draft()
     {
         return $this->belongsTo('App\Draft');

@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 |
 */
 
+//Define the user factory using Faker
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
@@ -28,6 +29,7 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
+//Add a state to the factory so i can allways have 1 static user
 $factory->state(User::class , 'nedko' , function(Faker $faker) {
     return [
         'name' => 'Nedko Ivanov',

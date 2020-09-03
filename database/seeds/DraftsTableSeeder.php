@@ -13,6 +13,7 @@ class DraftsTableSeeder extends Seeder
      */
     public function run()
     {
+        //Some user interactions and using the factory to seed
         $draftsCount = (int)$this->command->ask('How many drafts would you like?, 50');
         $users = User::all();
         factory(Draft::class, $draftsCount)->make()->each(function($draft) use ($users) {

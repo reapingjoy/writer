@@ -16,7 +16,7 @@ class Draft extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => $this->id, //Its good to be hidden
             'title' => $this->title,
             'alias' => $this->alias,
             'short_description' => $this->short_description,

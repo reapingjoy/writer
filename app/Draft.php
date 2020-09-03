@@ -13,27 +13,31 @@ class Draft extends Model
 
     protected $fillable = ['title', 'alias', 'short_description', 'user_id'];
 
+    //set relationship
     public function user()
     {
         return $this->belongsTo('App\User');
     }
 
+    //set relationship
     public function notes()
     {
         return $this->hasMany('App\Note');
     }
 
+    //set relationship
     public function shared_users()
     {
         return $this->belongsToMany('App\User')->withTimestamps();
     }
 
+    //add local scope
     public function scopeLatest(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-
+    //add observer for the soft deletes
     public static function boot()
     {
         parent::boot();

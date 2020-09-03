@@ -5,6 +5,7 @@
 use App\Draft;
 use Faker\Generator as Faker;
 
+//Define the draft factory using Faker
 $factory->define(Draft::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence(10),

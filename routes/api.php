@@ -14,22 +14,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+//Routes without authentication
 Route::post('login', 'API\AuthController@login');
 Route::post('register', 'API\AuthController@register');
 
+//Routes that need token and are under auth middleware
 Route::group([
     'middleware' => 'auth:api'
 ], function() {
-    Route::get('logout', 'API\AuthController@logout');
-    Route::get('user', 'API\AuthController@user');
 
+    //Logout
+    Route::get('logout', 'API\AuthController@logout');
+
+    //Get All Soft Deleted Drafts
     Route::get('drafts/deleted', 'API\DraftController@getAllDeleted');
+
+    //Get All Soft Deleted Notes
     Route::get('drafts/{draft_id}/notes/deleted', 'API\NoteController@getAllDeleted');
 
+    //Share a specific draft with other users
     Route::post('drafts/{draft_id}/share', 'API\DraftController@shareDraft');
+
+    //List all drafts shared with logged user 
     Route::get('drafts/shared', 'API\DraftController@getShared');
 
+    //All Resource routes for drafts and notes
     Route::apiResources([
         'drafts' => 'API\DraftController',
         'drafts.notes' => 'API\NoteController',

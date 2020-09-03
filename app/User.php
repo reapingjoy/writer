@@ -38,16 +38,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //set relationship
     public function drafts()
     {
         return $this->hasMany('App\Draft');
     }
 
+    //set relationship
     public function shared_drafts()
     {
         return $this->belongsToMany('App\Draft')->withTimestamps();
     }
 
+    //add observer
     public static function boot ()
     {
         parent::boot();
