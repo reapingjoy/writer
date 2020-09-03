@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 Route::post('login', 'API\AuthController@login');
 Route::post('register', 'API\AuthController@register');
@@ -29,6 +26,9 @@ Route::group([
 
     Route::get('drafts/deleted', 'API\DraftController@getAllDeleted');
     Route::get('drafts/{draft_id}/notes/deleted', 'API\NoteController@getAllDeleted');
+
+    Route::post('drafts/{draft_id}/share', 'API\DraftController@shareDraft');
+    Route::get('drafts/shared', 'API\DraftController@getShared');
 
     Route::apiResources([
         'drafts' => 'API\DraftController',

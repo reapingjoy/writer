@@ -130,4 +130,34 @@ class DraftController extends Controller
 
         return DraftResource::collection($drafts);
     }
+
+    /**
+     * Get All Shared Drafts
+     *
+     */
+    public function getShared()
+    {
+        $user_id = Auth::id();
+
+        $drafts = User::find($user_id)->shared_drafts;
+
+        return DraftResource::collection($drafts);
+    }
+
+    /**
+     * Share a draft with other users
+     *
+     */
+    public function shareDraft(Request $request, $id)
+    {
+        $users = $request->input('users');
+
+        $draft = Draft::findOrFail($id);
+
+        $draft->shared_users()->sync($users);
+
+        return response()->json([
+            'message' => 'Draft was shared with the selected users!'
+        ]);
+    }
 }

@@ -24,6 +24,6 @@ class Draft extends Model
 
     public function shared_users()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User')->withTimestamps();
     }
 }

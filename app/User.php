@@ -45,6 +45,6 @@ class User extends Authenticatable
 
     public function shared_drafts()
     {
-        return $this->belongsToMany('App\Draft');
+        return $this->belongsToMany('App\Draft')->withTimestamps();
     }
 }
