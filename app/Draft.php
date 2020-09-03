@@ -21,4 +21,9 @@ class Draft extends Model
     {
         return $this->hasMany('App\Note');
     }
+
+    public function shared_users()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }

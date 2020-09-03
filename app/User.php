@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Draft');
     }
+
+    public function shared_drafts()
+    {
+        return $this->belongsToMany('App\Draft');
+    }
 }
