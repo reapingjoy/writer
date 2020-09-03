@@ -47,4 +47,18 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Draft')->withTimestamps();
     }
+
+    public static function boot ()
+    {
+        parent::boot();
+
+        self::deleting(function (User $user) {
+
+            foreach ($user->drafts as $draft)
+            {
+                $draft->delete();
+            }
+
+        });
+    }
 }

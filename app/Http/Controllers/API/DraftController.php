@@ -23,7 +23,7 @@ class DraftController extends Controller
         $this->authorize('viewAny', Draft::class);
 
         $user_id = Auth::id();
-        $drafts = User::findOrFail($user_id)->drafts()->get();
+        $drafts = User::findOrFail($user_id)->drafts()->latest()->get();
         return DraftResource::collection($drafts);
     }
 
